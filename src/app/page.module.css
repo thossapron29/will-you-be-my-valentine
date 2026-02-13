@@ -21,12 +21,22 @@
 .gif {
   max-width: 100%;
   height: auto;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   margin-bottom: 1rem;
 }
 
+.interactiveItem {
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.interactiveItem:hover {
+  z-index: 100 !important;
+  transform: scale(1.1) !important;
+}
+
 .title {
+  font-family: var(--font-outfit), sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
   color: #c92a4e;
@@ -95,6 +105,37 @@
   transform: scale(0.95);
 }
 
+.gallery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap; /* Allow wrapping on very small screens if needed, though column is better for mobile */
+}
+
+/* Specific styles for gallery items to handle margins in CSS instead of inline */
+.galleryItemLeft {
+  transform: rotate(-12deg);
+  z-index: 1;
+}
+
+.galleryItemCenter {
+  transform: rotate(0deg);
+  z-index: 10;
+  margin: 0 -20px;
+}
+
+.galleryItemRight {
+  transform: rotate(12deg);
+  z-index: 1;
+}
+
+.galleryItemExtra {
+  transform: rotate(18deg);
+  z-index: 1;
+  margin-left: -20px;
+}
+
 @media (max-width: 600px) {
   .main {
     padding: 1rem;
@@ -123,5 +164,50 @@
   .yesButton {
     max-width: 90vw;
     word-wrap: break-word;
+  }
+
+  /* Responsive Gallery */
+  .gallery {
+    display: grid;
+    grid-template-areas: "stack";
+    place-items: center;
+    margin-bottom: 20px;
+    height: 300px; /* Specific height for mobile stack */
+  }
+
+  .galleryItemLeft,
+  .galleryItemCenter,
+  .galleryItemRight,
+  .galleryItemExtra {
+    grid-area: stack;
+    margin: 0 !important; /* Reset negative margins */
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .galleryItemExtra {
+    transform: rotate(18deg);
+    z-index: 1;
+  }
+
+  /* Mobile Navigation Button */
+  .mobileButton {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    background-color: #ff6b81;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+}
+
+@media (min-width: 601px) {
+  .mobileButton {
+    display: none;
   }
 }

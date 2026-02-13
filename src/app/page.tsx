@@ -1,13 +1,40 @@
 "use client";
 
-import { useState } from 'react';
-import styles from './page.module.css';
-import confetti from 'canvas-confetti';
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import styles from "./page.module.css";
+import confetti from "canvas-confetti";
 
 export default function Home() {
   const [noCount, setNoCount] = useState(0);
   const [yesPressed, setYesPressed] = useState(false);
   const yesButtonSize = noCount * 20 + 16;
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleNextImage = () => {
+    setActiveIndex((prev) => (prev + 1) % 4);
+  };
+
+  // Hydration-safe mobile check
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 600);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const getMobileStyle = (index: number, baseRotation: number) => {
+    if (!isMobile) return {}; // Return empty to let CSS/desktop styles take over
+
+    const isActive = index === activeIndex;
+    return {
+      zIndex: isActive ? 40 : 10 - index, // Simplified stack logic
+      transform: `rotate(${baseRotation}deg) scale(${isActive ? 1 : 0.9}) translateY(${isActive ? 0 : index * 5}px)`,
+      opacity: isActive ? 1 : 0.8,
+    };
+  };
 
   const handleNoClick = () => {
     setNoCount(noCount + 1);
@@ -18,7 +45,7 @@ export default function Home() {
     confetti({
       particleCount: 150,
       spread: 60,
-      origin: { y: 0.6 }
+      origin: { y: 0.6 },
     });
 
     // Continuous confetti
@@ -28,9 +55,9 @@ export default function Home() {
 
     const randomInRange = (min: number, max: number) => {
       return Math.random() * (max - min) + min;
-    }
+    };
 
-    const interval: any = setInterval(function () {
+    const interval = setInterval(function () {
       const timeLeft = animationEnd - Date.now();
 
       if (timeLeft <= 0) {
@@ -38,8 +65,16 @@ export default function Home() {
       }
 
       const particleCount = 50 * (timeLeft / duration);
-      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+      });
+      confetti({
+        ...defaults,
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+      });
     }, 250);
   };
 
@@ -74,15 +109,88 @@ export default function Home() {
       <div className={styles.container}>
         {yesPressed ? (
           <>
-            <img
-              src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif"
-              alt="Bear Kissing"
-              className={styles.gif}
-            />
-            <h1 className={styles.title}>Yay!!! I love you!! ❤️</h1>
+            <div className={styles.gallery}>
+              <div
+                className={`${styles.interactiveItem} ${styles.galleryItemLeft}`}
+                style={getMobileStyle(0, -18)}
+              >
+                <Image
+                  src="/us.jpg"
+                  alt="Us 1"
+                  width={200}
+                  height={267}
+                  style={{
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    objectFit: "cover",
+                    border: "5px solid white",
+                  }}
+                />
+              </div>
+              <div
+                className={`${styles.interactiveItem} ${styles.galleryItemCenter}`}
+                style={getMobileStyle(1, -6)}
+              >
+                <video
+                  src="/IMG_9284.MOV"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  style={{
+                    width: "200px",
+                    height: "267px",
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    objectFit: "cover",
+                    border: "5px solid white",
+                  }}
+                />
+              </div>
+              <div
+                className={`${styles.interactiveItem} ${styles.galleryItemRight}`}
+                style={getMobileStyle(2, 6)}
+              >
+                <Image
+                  src="/us_final_2.jpg"
+                  alt="Us 2"
+                  width={200}
+                  height={267}
+                  style={{
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    objectFit: "cover",
+                    border: "5px solid white",
+                  }}
+                />
+              </div>
+              <div
+                className={`${styles.interactiveItem} ${styles.galleryItemExtra}`}
+                style={getMobileStyle(3, 18)}
+              >
+                <Image
+                  src="/us3.jpg"
+                  alt="Us 4"
+                  width={200}
+                  height={267}
+                  style={{
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    objectFit: "cover",
+                    border: "5px solid white",
+                  }}
+                />
+              </div>
+            </div>
+
+            <button className={styles.mobileButton} onClick={handleNextImage}>
+              Next photo
+            </button>
+            <h1 className={styles.title}>I knew you would say yes! 💗</h1>
           </>
         ) : (
           <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://media.tenor.com/VIChDQ6ejRQAAAAi/jumping-bear-hearts-no-png.gif"
               alt="Cute bear asking"
@@ -100,10 +208,7 @@ export default function Home() {
                 Yes
               </button>
 
-              <button
-                className={styles.noButton}
-                onClick={handleNoClick}
-              >
+              <button className={styles.noButton} onClick={handleNoClick}>
                 {getNoButtonText()}
               </button>
             </div>
