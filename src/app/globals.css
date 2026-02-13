@@ -1,0 +1,25 @@
+:root {
+  --background: #ffe4e6;
+  --foreground: #4e0e2e;
+  --primary: #ff4d6d;
+  --secondary: #ff8fa3;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

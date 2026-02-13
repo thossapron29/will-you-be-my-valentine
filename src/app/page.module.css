@@ -1,0 +1,127 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--background);
+}
+
+.container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  max-width: 600px;
+  width: 100%;
+}
+
+.gif {
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #c92a4e;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.yesButton {
+  background: linear-gradient(45deg, #2ecc71, #27ae60);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+  animation: pulse 2s infinite;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.yesButton:hover {
+  background: linear-gradient(45deg, #27ae60, #2ecc71);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(46, 204, 113, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+  }
+}
+
+.noButton {
+  background-color: #e74c3c;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.noButton:hover {
+  background-color: #c0392b;
+  transform: scale(0.95);
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .container {
+    gap: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .buttons {
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .yesButton,
+  .noButton {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  /* Ensure the Yes button doesn't overflow when it gets huge */
+  .yesButton {
+    max-width: 90vw;
+    word-wrap: break-word;
+  }
+}
